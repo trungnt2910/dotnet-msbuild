@@ -746,7 +746,7 @@ internal static class NativeMethods
     /// <summary>
     /// Cached value for IsUnixLike (this method is called frequently during evaluation).
     /// </summary>
-    private static readonly bool s_isUnixLike = IsLinux || IsOSX || IsBSD;
+    private static readonly bool s_isUnixLike = IsLinux || IsOSX || IsBSD || IsHaiku;
 
     /// <summary>
     /// Gets a flag indicating if we are running under a Unix-like system (Mac, Linux, etc.)
@@ -782,6 +782,21 @@ internal static class NativeMethods
             return RuntimeInformation.IsOSPlatform(OSPlatform.Create("FREEBSD")) ||
                    RuntimeInformation.IsOSPlatform(OSPlatform.Create("NETBSD")) ||
                    RuntimeInformation.IsOSPlatform(OSPlatform.Create("OPENBSD"));
+        }
+#endif
+    }
+
+    /// <summary>
+    /// Gets a flag indicating if we are running under Haiku
+    /// </summary>
+    internal static bool IsHaiku
+    {
+#if CLR2COMPATIBILITY
+        get { return false; }
+#else
+        get
+        {
+            return RuntimeInformation.IsOSPlatform(OSPlatform.Create("HAIKU"));
         }
 #endif
     }
